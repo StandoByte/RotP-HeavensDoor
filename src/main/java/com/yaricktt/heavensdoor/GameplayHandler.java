@@ -99,6 +99,19 @@ public class GameplayHandler {
                 }
             });
         }
+        if (attacker instanceof StandEntity) {
+            StandEntity stand = (StandEntity) attacker;
+            LivingEntity standOwner = stand.getUser();
+            if (standOwner != null || standOwner instanceof StandUserDummyEntity) {
+                if (standOwner.hasEffect(InitEffects.FORGOT_ATTACK.get())) {
+                    event.setCanceled(true);
+                }
+            }
+        } else {
+            if (attacker.hasEffect(InitEffects.FORGOT_ATTACK.get())) {
+                event.setCanceled(true);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -327,6 +340,7 @@ public class GameplayHandler {
     }
 
     private static boolean wasShiftPressed = false;
+    private static boolean wasJumpPressed = false;
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
@@ -344,6 +358,18 @@ public class GameplayHandler {
                 wasShiftPressed = false;
             }
         }
+        //if (player != null && player.hasEffect(InitEffects.FORGOT_JUMPING.get()) && !player.abilities.instabuild) {
+        //    if (Minecraft.getInstance().options.keyJump.isDown()) {
+        //        Minecraft.getInstance().options.keyJump.setDown(false);
+        //        if (!wasJumpPressed) {
+        //            wasJumpPressed = true;
+        //            player.setJumping(false);
+        //            sendMessage(player, "message.rotp_hd.forgot_jump");
+        //        }
+        //    } else {
+        //        wasJumpPressed = false;
+        //    }
+        //}
     }
 
     @SubscribeEvent
@@ -353,7 +379,6 @@ public class GameplayHandler {
             event.player.setShiftKeyDown(false);
         }
     }
-
 
     @SubscribeEvent
     public static void onBlockStartBreak(PlayerInteractEvent.LeftClickBlock event) {

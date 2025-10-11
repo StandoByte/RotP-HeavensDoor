@@ -18,7 +18,7 @@ public class PlayerEntityMixin {
         PlayerEntity player = (PlayerEntity) (Object) this;
         EffectInstance book = player.getEffect(InitEffects.BOOK.get());
         EffectInstance forgotJump = player.getEffect(InitEffects.FORGOT_JUMPING.get());
-        if (book != null && book.getAmplifier() >= 2) {
+        if (book != null && book.getAmplifier() >= 1) {
             ci.cancel();
         }
         if (forgotJump != null && forgotJump.getAmplifier() >= 0) {

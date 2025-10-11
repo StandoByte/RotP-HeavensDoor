@@ -40,7 +40,7 @@ public class InitStands {
             () -> new HeavensDoorFinisherPunch(new StandEntityHeavyAttack.Builder() //TODO finisher ability
                     .punchSound(InitSounds.HEAVENS_DOOR_WRITE_COMMAND)
                     .standPose(HeavensDoorFinisherPunch.FINISHER)
-                    .resolveLevelToUnlock(3)
+                    //.resolveLevelToUnlock(3) // <---- don't working
                     .partsRequired(StandPart.ARMS)));
 
     public static final RegistryObject<Punch> HEAVENS_DOOR_PUNCH = ACTIONS.register("heavens_door_turn_into_a_book",

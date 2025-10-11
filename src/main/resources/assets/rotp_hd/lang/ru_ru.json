@@ -29,7 +29,7 @@
   "gui.rotp_hd.text.width": "Ширина: %s",
   "gui.rotp_hd.text.life_time": "Время жизни: %s мин",
   "gui.rotp_hd.text.master": "Мастер: %s",
-  "gui.rotp_hd.text.master.none": "Мастер:     нет",
+  "gui.rotp_hd.text.master.none": "Мастер: нет",
   "gui.rotp_hd.text.owner": "Хозяин: %s",
   "gui.rotp_hd.text.owner.none": "Хозяин: нет",
   "gui.rotp_hd.text.power": "JСила:     %1$s %2$s",

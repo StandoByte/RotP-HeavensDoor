@@ -83,7 +83,6 @@ public abstract class StandEntityMixin extends Entity {
             if (player.hasEffect(InitEffects.BLINDNESS_ENTITY_EFFECT.get())) {
                 cir.setReturnValue(true);
                 cir.cancel();
-                return;
             }
         }
     }

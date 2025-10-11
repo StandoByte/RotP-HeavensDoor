@@ -8,7 +8,6 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraftforge.common.ForgeMod;
@@ -28,7 +27,7 @@ public class LivingUtilCap {
     private BehaviorState currentBehavior;
 
     public static final double HEALTH_MODIFIER_PAGE = 0.50;
-    public static final double GRAVITY_MODIFIER_PAGE = 0.002;
+    public static final double GRAVITY_MODIFIER_PAGE = 0.001;
     public static final int MAX_PAGES = 10;
 
     public enum BehaviorState {
@@ -61,7 +60,7 @@ public class LivingUtilCap {
 
     public void initializeBehavior(MobEntity mob) {
         if (this.originalBehavior != null) return;
-        if (mob instanceof IMob || mob instanceof MonsterEntity || !(mob instanceof TameableEntity)) {
+        if (mob instanceof IMob || mob instanceof MonsterEntity) {
             this.originalBehavior = BehaviorState.AGGRESSIVE;
         } else {
             this.originalBehavior = BehaviorState.PEACEFUL;

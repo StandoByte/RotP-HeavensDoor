@@ -2,12 +2,10 @@ package com.yaricktt.heavensdoor.network;
 
 import com.yaricktt.heavensdoor.capability.entity.LivingUtilCapProvider;
 import com.yaricktt.heavensdoor.entity.ai.goal.MeleeAttackGoalForPeaceful;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.PrioritizedGoal;
-import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AmbientEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
