@@ -90,8 +90,8 @@ public class BookGui extends Screen {
     private int behaviorButtonHeight;
     private boolean isBehaviorButtonHovered = false;
 
-    private static final int TEXT_COLOR_NORMAL = 0x999999;
-    private static final int TEXT_COLOR_HOVER = 0x505050;
+    private static final int TEXT_COLOR_NORMAL = 0x66999999;
+    private static final int TEXT_COLOR_HOVER = 0x999999;
 
     @Override
     protected void init() {
@@ -318,18 +318,19 @@ public class BookGui extends Screen {
                     int offsetX = (size - iconSize) / 2;
                     int offsetY = (size - iconSize) / 2;
 
+                    int frameThickness = 1;
+
+                    fill(matrixStack, x - frameThickness - 3, y - frameThickness - 3 , x + size + frameThickness + 3, y + 36, 0xFF000001);
+                    fill(matrixStack, x - frameThickness - 2, y - frameThickness - 2, x + size + frameThickness + 2, y + 35, 0xFFFFFFFF);
+                    fill(matrixStack, x - frameThickness, y - frameThickness, x + size + frameThickness, y + 33, 0xFF000001);
+                    fill(matrixStack, x - frameThickness + 1, y - frameThickness + 1, x + size + frameThickness - 1, y + 32, 0xFFE2E8F8);
+
                     minecraft.getTextureManager().bind(icon);
                     blit(matrixStack, x + offsetX, y + offsetY, iconSize, iconSize, 0, 0, iconSize, iconSize, iconSize, iconSize);
 
                     RenderSystem.disableTexture();
                     RenderSystem.enableBlend();
                     RenderSystem.defaultBlendFunc();
-
-                    int frameThickness = 2;
-                    fill(matrixStack, x - frameThickness, y - frameThickness, x + size + frameThickness, y, 0x696969AA);
-                    fill(matrixStack, x - frameThickness, y + size, x + size + frameThickness, y + size + frameThickness, 0x696969AA);
-                    fill(matrixStack, x - frameThickness, y, x, y + size, 0x876876AA);
-                    fill(matrixStack, x + size, y, x + size + frameThickness, y + size, 0x678678AA);
                     RenderSystem.enableTexture();
                 }
             } catch (Exception e) {
@@ -420,8 +421,8 @@ public class BookGui extends Screen {
                 });
             }
 
-            float health = this.targetEntity.getHealth();
-            float maxHealth = this.targetEntity.getMaxHealth();
+            int health = (int)this.targetEntity.getHealth();
+            int maxHealth = (int)this.targetEntity.getMaxHealth();
             float width = this.targetEntity.getBbWidth();
             float height = this.targetEntity.getBbHeight();
             ITextComponent ownerInfo = getOwnerInfo(this.targetEntity);
@@ -429,7 +430,7 @@ public class BookGui extends Screen {
             INonStandPower power = INonStandPower.getNonStandPowerOptional(this.targetEntity).orElse(null);
             IStandPower standPower = IStandPower.getStandPowerOptional(this.targetEntity).orElse(null);
 
-            String healthStr = String.format("%.1f / %.1f", health, maxHealth);
+            String healthStr = String.format("%d / %d", health, maxHealth);
 
             int textX = i + 10;
             int textY = j + 15;

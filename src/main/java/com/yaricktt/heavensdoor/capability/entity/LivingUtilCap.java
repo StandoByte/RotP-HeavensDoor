@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class LivingUtilCap {
+    private final LivingEntity entity;
     private UUID ownerUUID;
     private boolean cannotAttackOwner;
     private UUID PlayerTargetUUID;
@@ -25,6 +26,10 @@ public class LivingUtilCap {
 
     private BehaviorState originalBehavior;
     private BehaviorState currentBehavior;
+
+    public LivingUtilCap(LivingEntity entity) {
+        this.entity = entity;
+    }
 
     public static final double HEALTH_MODIFIER_PAGE = 0.50;
     public static final double GRAVITY_MODIFIER_PAGE = 0.001;

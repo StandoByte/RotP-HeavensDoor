@@ -1,39 +1,31 @@
 package com.yaricktt.heavensdoor.capability.entity;
 
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class LivingUtilCapProvider implements ICapabilitySerializable<CompoundNBT> {
-
+public class LivingUtilCapProvider implements ICapabilitySerializable<INBT> {
     @CapabilityInject(LivingUtilCap.class)
     public static Capability<LivingUtilCap> CAPABILITY = null;
+    private LazyOptional<LivingUtilCap> instance;
 
-    private final LivingUtilCap instance = new LivingUtilCap();
-    private final LazyOptional<LivingUtilCap> optional = LazyOptional.of(() -> instance);
+    public LivingUtilCapProvider(LivingEntity entity) {
+        this.instance = LazyOptional.of(() -> new LivingUtilCap(entity));
+    }
 
-    @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-        if (cap == CAPABILITY) {
-            return optional.cast();
-        }
-        return LazyOptional.empty();
+        return CAPABILITY.orEmpty(cap, this.instance);
     }
 
-    @Override
-    public CompoundNBT serializeNBT() {
-        return optional.orElse(new LivingUtilCap()).toNBT();
+    public INBT serializeNBT() {
+        return CAPABILITY.getStorage().writeNBT(CAPABILITY, this.instance.orElseThrow(() -> new IllegalArgumentException("Living capability LazyOptional is not attached.")), (Direction)null);
     }
 
-    @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        optional.ifPresent(cap -> cap.fromNBT(nbt));
-    }
-
-    public void invalidate() {
-        optional.invalidate();
+    public void deserializeNBT(INBT nbt) {
+        CAPABILITY.getStorage().readNBT(CAPABILITY, this.instance.orElseThrow(() -> new IllegalArgumentException("Living capability LazyOptional is not attached.")), (Direction)null, nbt);
     }
 }

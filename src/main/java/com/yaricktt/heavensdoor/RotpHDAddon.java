@@ -1,5 +1,6 @@
 package com.yaricktt.heavensdoor;
 
+import com.yaricktt.heavensdoor.capability.entity.CapabilityHandler;
 import com.yaricktt.heavensdoor.init.*;
 import com.yaricktt.heavensdoor.network.AddonPackets;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -27,9 +28,10 @@ public class RotpHDAddon {
         modEventBus.addListener(this::commonSetup);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {
+    private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             AddonPackets.register();
+            CapabilityHandler.registerCapabilities();
             InitEffects.afterEffectsRegister();
         });
     }
