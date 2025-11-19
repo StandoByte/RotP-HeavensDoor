@@ -15,6 +15,8 @@
   "death.attack.self.harm": "%1$s был убит %1$s",
 
   "effect.rotp_hd.book_effect": "Книга",
+  "effect.rotp_hd.kys_effect": "Убей себя!",
+
   "gui.rotp_hd.command.fly_backwards": "Отлети назад!",
   "gui.rotp_hd.command.freeze_text": "Замри!",
   "gui.rotp_hd.command.kys": "Убей себя!",

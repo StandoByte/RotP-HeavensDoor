@@ -90,22 +90,33 @@ public class LivingUtilCap {
         double newGravity = target.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).getBaseValue() - gravityChange;
         target.getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(newGravity);
         this.setPageCount(newPageCount);
-        updateEffectsAndSync(target);
+        AddonPackets.INSTANCE.send(
+                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> target),
+                new SyncLivingUtilCapPacket(target.getId(), this.liveTime, this.getPageCount())
+        );
     }
 
-    private void updateEffectsAndSync(LivingEntity target) {
+    public void addForgotEffect(LivingEntity target) {
         int pages = this.getPageCount();
+        if (pages >= 1) target.addEffect(new EffectInstance(InitEffects.FORGOT_SECOND_HAND.get(), 3600, 0, false, false));
+        if (pages >= 2) target.addEffect(new EffectInstance(InitEffects.FORGOT_SWIMMING.get(), 3600, 0, false, false));
+        if (pages >= 3) target.addEffect(new EffectInstance(InitEffects.FORGOT_RUNNING.get(), 3600, 0, false, false));
+        if (pages >= 4) target.addEffect(new EffectInstance(InitEffects.FORGOT_JUMPING.get(), 3600, 0, false, false));
+        if (pages >= 5) target.addEffect(new EffectInstance(InitEffects.FORGOT_SHIFTING.get(), 3600, 0, false, false));
+        if (pages >= 6) target.addEffect(new EffectInstance(InitEffects.FORGOT_ATTACK.get(), 3600, 0, false, false));
+        if (pages >= 7) target.addEffect(new EffectInstance(InitEffects.FORGOT_CRAFTING.get(), 3600, 0, false, false));
+        if (pages >= 8) target.addEffect(new EffectInstance(InitEffects.FORGOT_CONTAINERS.get(), 3600, 0, false, false));
+        if (pages >= 9) target.addEffect(new EffectInstance(InitEffects.FORGOT_BREAKING.get(), 3600, 0, false, false));
+        if (pages >= 10) target.addEffect(new EffectInstance(InitEffects.FORGOT_STAND.get(), 3600, 0, false, false));
 
-        if (pages >= 1) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_SECOND_HAND.get(), 3600, 0, false, false));
-        if (pages >= 2) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_SWIMMING.get(), 3600, 0, false, false));
-        if (pages >= 3) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_RUNNING.get(), 3600, 0, false, false));
-        if (pages >= 4) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_JUMPING.get(), 3600, 0, false, false));
-        if (pages >= 5) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_SHIFTING.get(), 3600, 0, false, false));
-        if (pages >= 6) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_ATTACK.get(), 3600, 0, false, false));
-        if (pages >= 7) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_CRAFTING.get(), 3600, 0, false, false));
-        if (pages >= 8) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_CONTAINERS.get(), 3600, 0, false, false));
-        if (pages >= 9) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_BREAKING.get(), 3600, 0, false, false));
-        if (pages >= 10) addEffectIfNotPresent(target, new EffectInstance(InitEffects.FORGOT_STAND.get(), 3600, 0, false, false));
+        AddonPackets.INSTANCE.send(
+                PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> target),
+                new SyncLivingUtilCapPacket(target.getId(), this.liveTime, pages)
+        );
+    }
+
+    public void removeEffects(LivingEntity target) {
+        int pages = this.getPageCount();
 
         if (pages < 10) target.removeEffect(InitEffects.FORGOT_STAND.get());
         if (pages < 9) target.removeEffect(InitEffects.FORGOT_BREAKING.get());
@@ -122,12 +133,6 @@ public class LivingUtilCap {
                 PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> target),
                 new SyncLivingUtilCapPacket(target.getId(), this.liveTime, pages)
         );
-    }
-
-    private void addEffectIfNotPresent(LivingEntity target, EffectInstance effect) {
-        if (!target.hasEffect(effect.getEffect())) {
-            target.addEffect(effect);
-        }
     }
 
     public int getPageCount() {

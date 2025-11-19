@@ -7,7 +7,6 @@ import com.github.standobyte.jojo.power.impl.stand.IStandPower;
 import com.yaricktt.heavensdoor.capability.entity.LivingUtilCap;
 import com.yaricktt.heavensdoor.capability.entity.LivingUtilCapProvider;
 import com.yaricktt.heavensdoor.entity.HeavensDoorEntity;
-import com.yaricktt.heavensdoor.entity.ai.goal.MeleeAttackGoalForPeaceful;
 import com.yaricktt.heavensdoor.init.InitEffects;
 import com.yaricktt.heavensdoor.item.PageItem;
 import com.yaricktt.heavensdoor.itemtracking.OfflinePlayerCache;
@@ -15,7 +14,6 @@ import com.yaricktt.heavensdoor.itemtracking.PageTrackerMap;
 import com.yaricktt.heavensdoor.network.AddonPackets;
 import com.yaricktt.heavensdoor.network.SyncLivingUtilCapPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -26,8 +24,6 @@ import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AmbientEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
@@ -39,7 +35,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.Explosion;
@@ -68,7 +63,6 @@ import net.minecraftforge.items.IItemHandler;
 
 import java.util.*;
 
-import static com.yaricktt.heavensdoor.capability.entity.LivingUtilCap.BehaviorState.AGGRESSIVE;
 import static com.yaricktt.heavensdoor.capability.entity.LivingUtilCap.BehaviorState.PEACEFUL;
 
 @Mod.EventBusSubscriber(modid = RotpHDAddon.MOD_ID)
@@ -341,7 +335,6 @@ public class GameplayHandler {
     }
 
     private static boolean wasShiftPressed = false;
-    private static boolean wasJumpPressed = false;
 
     @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
@@ -432,6 +425,7 @@ public class GameplayHandler {
             int cachedPageCount = cachedData.getInt("PageCount");
             player.getCapability(LivingUtilCapProvider.CAPABILITY).ifPresent(cap -> {
                 cap.updatePageCount(cachedPageCount, player);
+                cap.removeEffects(player);
             });
         }
     }

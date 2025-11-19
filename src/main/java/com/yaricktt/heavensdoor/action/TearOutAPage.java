@@ -71,6 +71,7 @@ public class TearOutAPage extends StandEntityAction {
 
                 int newPageCount = cap.getPageCount() + 1;
                 cap.updatePageCount(newPageCount, target);
+                cap.addForgotEffect(target);
 
                 ItemStack page = PageItem.withTargetAndCreator(new ItemStack(InitItems.PAGE.get()), target, user);
                 MCUtil.giveItemTo(user, page, false);
@@ -89,6 +90,7 @@ public class TearOutAPage extends StandEntityAction {
 
                     int newPageCount = cap.getPageCount() + 1;
                     cap.updatePageCount(newPageCount, target);
+                    cap.addForgotEffect(target);
 
                     ItemStack page = PageItem.withTargetAndCreator(new ItemStack(InitItems.PAGE.get()), target, user);
                     MCUtil.giveItemTo(user, page, false);

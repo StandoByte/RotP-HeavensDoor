@@ -282,11 +282,20 @@ public class BookGui extends Screen {
     private void renderPlayerFace(MatrixStack matrixStack, int x, int y, int size, PlayerEntity player) {
         NetworkPlayerInfo playerInfo = Minecraft.getInstance().getConnection().getPlayerInfo(player.getGameProfile().getId());
         if (playerInfo != null) {
+
+
+            int frameThickness = 1;
+            fill(matrixStack, x - frameThickness - 3, y - frameThickness - 3 , x + size + frameThickness + 3, y + 36, 0xFF000001);
+            fill(matrixStack, x - frameThickness - 2, y - frameThickness - 2, x + size + frameThickness + 2, y + 35, 0xFFFFFFFF);
+            fill(matrixStack, x - frameThickness, y - frameThickness, x + size + frameThickness, y + 33, 0xFF000001);
+            fill(matrixStack, x - frameThickness + 1, y - frameThickness + 1, x + size + frameThickness - 1, y + 32, 0xFFE2E8F8);
+
             ResourceLocation skin = playerInfo.getSkinLocation();
             Minecraft minecraft = Minecraft.getInstance();
             minecraft.getTextureManager().bind(skin);
 
             blit(matrixStack, x, y, size, size, 8.0F, 8.0F, 8, 8, 64, 64);
+
 
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
@@ -297,12 +306,6 @@ public class BookGui extends Screen {
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
             RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-
-            int frameThickness = 2;
-            fill(matrixStack, x - frameThickness, y - frameThickness, x + size + frameThickness, y, 0x696969AA);
-            fill(matrixStack, x - frameThickness, y + size, x + size + frameThickness, y + size + frameThickness, 0x696969AA);
-            fill(matrixStack, x - frameThickness, y, x, y + size, 0x876876AA);
-            fill(matrixStack, x + size, y, x + size + frameThickness, y + size, 0x678678AA);
 
             RenderSystem.enableTexture();
         }

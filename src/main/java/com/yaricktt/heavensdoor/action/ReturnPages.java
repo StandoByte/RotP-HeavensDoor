@@ -61,6 +61,7 @@ public class ReturnPages extends StandEntityAction {
                 target.getCapability(LivingUtilCapProvider.CAPABILITY).ifPresent(cap -> {
                     int newPageCount = cap.getPageCount() - 1;
                     cap.updatePageCount(newPageCount, target);
+                    cap.removeEffects(target);
                     heldItem.shrink(1);
                 });
                 break;

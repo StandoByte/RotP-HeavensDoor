@@ -23,12 +23,13 @@
   "rotp_hd.page.player_name": "%s",
 
   "effect.rotp_hd.book_effect": "Book",
+  "effect.rotp_hd.kys_effect": "Kill Yourself!",
 
   "item.rotp_hd.page_item": "Page",
   "death.attack.self.harm": "%1$s was killed by %1$s",
 
   "message.rotp_hd.forgot_jump": "You forgot how to jump",
-  "message.rotp_hd.forgot_shift": "Ypu forgot how to shift",
+  "message.rotp_hd.forgot_shift": "You forgot how to shift",
   "message.rotp_hd.forgot_run": "You forgot how to run",
   "message.rotp_hd.forgot_craft": "You forgot how to craft",
   "message.rotp_hd.forgot_second_hand": "You forgot how to use your off-hand!",
