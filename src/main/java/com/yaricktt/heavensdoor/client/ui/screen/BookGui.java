@@ -32,7 +32,7 @@ import net.minecraft.world.World;
 
 public class BookGui extends Screen {
     public static final ResourceLocation BOOK_GUI = new ResourceLocation(RotpHDAddon.MOD_ID, "textures/gui/book_gui.png");
-    private final int targetEntityUUID;
+    private final int targetEntityId;
     private LivingEntity targetEntity;
     private boolean targetLost = false;
 
@@ -96,7 +96,7 @@ public class BookGui extends Screen {
     @Override
     protected void init() {
         super.init();
-        Entity entity = Minecraft.getInstance().level.getEntity(this.targetEntityUUID);
+        Entity entity = Minecraft.getInstance().level.getEntity(this.targetEntityId);
         if (entity instanceof LivingEntity) {
             this.targetEntity = (LivingEntity) entity;
             this.targetLost = false;
@@ -173,9 +173,9 @@ public class BookGui extends Screen {
         }
     }
 
-    public BookGui(int entityUUID) {
+    public BookGui(int entityId) {
         super(NarratorChatListener.NO_TITLE);
-        this.targetEntityUUID = entityUUID;
+        this.targetEntityId = entityId;
     }
 
     public static void openWindowOnClick(LivingEntity user, int entityId) {
@@ -189,7 +189,7 @@ public class BookGui extends Screen {
     @Override
     public void onClose() {
         super.onClose();
-        AddonPackets.INSTANCE.sendToServer(new TriggerBookPacket(this.targetEntityUUID, 0));
+        AddonPackets.INSTANCE.sendToServer(new TriggerBookPacket(this.targetEntityId, 0));
     }
 
     @Override
@@ -205,12 +205,12 @@ public class BookGui extends Screen {
         if (this.isMouseOverFbButton(mouseX, mouseY)) {
             this.minecraft.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             World world = ClientUtil.getClientWorld();
-            Entity entity = world.getEntity(this.targetEntityUUID);
+            Entity entity = world.getEntity(this.targetEntityId);
             if (entity instanceof StandEntity) {
                 StandEntity stand = (StandEntity) entity;
                 AddonPackets.INSTANCE.sendToServer(new TriggerFlyBackwardsPacket(stand.getUser().getId()));
             } else if (entity instanceof LivingEntity) {
-                AddonPackets.INSTANCE.sendToServer(new TriggerFlyBackwardsPacket(this.targetEntityUUID));
+                AddonPackets.INSTANCE.sendToServer(new TriggerFlyBackwardsPacket(this.targetEntityId));
             }
             this.minecraft.getSoundManager().play(SimpleSound.forUI(InitSounds.HEAVENS_DOOR_WRITE_COMMAND.get(), 1.0F));
             this.onClose();
@@ -222,9 +222,9 @@ public class BookGui extends Screen {
             this.minecraft.getSoundManager().play(SimpleSound.forUI(InitSounds.HEAVENS_DOOR_WRITE_COMMAND.get(), 1.0F));
             boolean hasEffect = this.targetEntity.hasEffect(InitEffects.BLINDNESS_ENTITY_EFFECT.get());
             if (hasEffect) {
-                AddonPackets.INSTANCE.sendToServer(new TriggerApplyBlindnessPacket(this.targetEntityUUID, 0));
+                AddonPackets.INSTANCE.sendToServer(new TriggerApplyBlindnessPacket(this.targetEntityId, 0));
             } else {
-                AddonPackets.INSTANCE.sendToServer(new TriggerApplyBlindnessPacket(this.targetEntityUUID, 15 * 20));
+                AddonPackets.INSTANCE.sendToServer(new TriggerApplyBlindnessPacket(this.targetEntityId, 15 * 20));
             }
 
             this.onClose();
@@ -234,7 +234,7 @@ public class BookGui extends Screen {
         if (this.isMouseOverFreezeButton(mouseX, mouseY)) {
             this.minecraft.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.minecraft.getSoundManager().play(SimpleSound.forUI(InitSounds.HEAVENS_DOOR_WRITE_COMMAND.get(), 1.0F));
-            AddonPackets.INSTANCE.sendToServer(new TriggerFreezePacket(this.targetEntityUUID, 60));
+            AddonPackets.INSTANCE.sendToServer(new TriggerFreezePacket(this.targetEntityId, 60));
             this.onClose();
             return true;
         }
@@ -242,12 +242,12 @@ public class BookGui extends Screen {
         if (this.isMouseOverCantAttackPlayerButton(mouseX, mouseY)) {
             this.minecraft.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             World world = ClientUtil.getClientWorld();
-            Entity entity = world.getEntity(this.targetEntityUUID);
+            Entity entity = world.getEntity(this.targetEntityId);
             if (entity instanceof StandEntity) {
                 StandEntity stand = (StandEntity) entity;
                 this.minecraft.setScreen(new PlayerSelectionScreen(stand.getUser().getId()));
             } else if (entity instanceof LivingEntity) {
-                this.minecraft.setScreen(new PlayerSelectionScreen(this.targetEntityUUID));
+                this.minecraft.setScreen(new PlayerSelectionScreen(this.targetEntityId));
             }
 
            // this.onClose();
@@ -259,10 +259,10 @@ public class BookGui extends Screen {
             this.minecraft.getSoundManager().play(SimpleSound.forUI(InitSounds.HEAVENS_DOOR_WRITE_COMMAND.get(), 1.0F));
             boolean hasEffect = this.targetEntity.hasEffect(InitEffects.KYS_EFFECT.get());
             if (hasEffect) {
-                AddonPackets.INSTANCE.sendToServer(new TriggerApplyKYSPacket(this.targetEntityUUID, 0));
+                AddonPackets.INSTANCE.sendToServer(new TriggerApplyKYSPacket(this.targetEntityId, 0));
             } else {
                 int duration = 9999 * 20;
-                AddonPackets.INSTANCE.sendToServer(new TriggerApplyKYSPacket(this.targetEntityUUID, duration));
+                AddonPackets.INSTANCE.sendToServer(new TriggerApplyKYSPacket(this.targetEntityId, duration));
             }
 
             this.onClose();
@@ -272,7 +272,7 @@ public class BookGui extends Screen {
         if (this.isMouseOverBehaviorButton(mouseX, mouseY)) {
             this.minecraft.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.minecraft.getSoundManager().play(SimpleSound.forUI(InitSounds.HEAVENS_DOOR_WRITE_COMMAND.get(), 1.0F));
-            AddonPackets.INSTANCE.sendToServer(new TriggerChangeBehaviorPacket(this.targetEntityUUID));
+            AddonPackets.INSTANCE.sendToServer(new TriggerChangeBehaviorPacket(this.targetEntityId));
             this.onClose();
             return true;
         }
