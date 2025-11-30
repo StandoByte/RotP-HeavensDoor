@@ -103,9 +103,9 @@ public class TearOutAPage extends StandEntityAction {
     public void onTaskSet(World world, StandEntity standEntity, IStandPower standPower, Phase phase, StandEntityTask task, int ticks) {
         if (task.getPhase() == Phase.BUTTON_HOLD && !standEntity.isManuallyControlled()) {
             ActionTarget target = task.getTarget();
-            LivingEntity entity = (LivingEntity) target.getEntity();
+            Entity entity = target.getEntity();
             LivingEntity user = standPower.getUser();
-            if (entity instanceof LivingEntity && entity.isAlive() && user instanceof LivingEntity) {
+            if (entity instanceof LivingEntity && entity.isAlive()) {
                 Vector3d dir_difference=entity.position().subtract(user.position());
                 Vector3d normal_dir=dir_difference.normalize();
                 standEntity.lookAt(EntityAnchorArgument.Type.EYES, normal_dir);

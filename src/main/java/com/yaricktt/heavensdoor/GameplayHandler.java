@@ -121,7 +121,7 @@ public class GameplayHandler {
         if (dmgEntity instanceof HeavensDoorEntity) {
             StandEntity stand = (StandEntity) dmgEntity;
             LivingEntity standOwner = stand.getUser();
-            if (standOwner != null || standOwner instanceof StandUserDummyEntity) {
+            if (standOwner != null) {
                 victim.getCapability(LivingUtilCapProvider.CAPABILITY).ifPresent((LivingUtilCap cap) -> {
                     if (!cap.hasOwner() || !cap.getOwnerUUID().equals(standOwner.getUUID())) {
                         cap.setOwnerUUID(standOwner.getUUID());
@@ -135,29 +135,31 @@ public class GameplayHandler {
 
                 int effectLevel;
                 int effectTime;
-                IStandPower powerStand = IStandPower.getPlayerStandPower((PlayerEntity) standOwner);
-                if (powerStand.getResolveLevel() > 1) {
-                    if (IStandPower.getStandPowerOptional(victim).map(IStandPower::hasPower).orElse(false)
-                            || INonStandPower.getNonStandPowerOptional(victim).map(INonStandPower::hasPower).orElse(false)) {
-                        if (victim.getHealth() <= victim.getMaxHealth() * 0.65F) {
-                            effectTime = 400;
-                            effectLevel = 1;
-                        } else {
-                            effectTime = 300;
-                            effectLevel = 0;
-                        }
-                    } else {
-                        effectTime = 600;
-                        effectLevel = 2;
-                    }
-                } else {
-                    effectLevel = 0;
-                    effectTime = 200;
+                IStandPower powerStand = IStandPower.getStandPowerOptional(standOwner).orElse(null);
+                if (powerStand != null) {
+                	if (powerStand.getResolveLevel() > 1) {
+                		if (IStandPower.getStandPowerOptional(victim).map(IStandPower::hasPower).orElse(false)
+                				|| INonStandPower.getNonStandPowerOptional(victim).map(INonStandPower::hasPower).orElse(false)) {
+                			if (victim.getHealth() <= victim.getMaxHealth() * 0.65F) {
+                				effectTime = 400;
+                				effectLevel = 1;
+                			} else {
+                				effectTime = 300;
+                				effectLevel = 0;
+                			}
+                		} else {
+                			effectTime = 600;
+                			effectLevel = 2;
+                		}
+                	} else {
+                		effectLevel = 0;
+                		effectTime = 200;
+                	}
+                	
+                	victim.addEffect(new EffectInstance(InitEffects.BOOK.get(), effectTime, effectLevel, false, false));
+                	// int effectLevel = IStandPower.getStandPowerOptional(victim).map(IStandPower::hasPower).orElse(false) || INonStandPower.getNonStandPowerOptional(victim).map(INonStandPower::hasPower).orElse(false) ? 1 : 2;
+                	// victim.addEffect(new EffectInstance(InitEffects.BOOK.get(), 600, effectLevel, false, false));
                 }
-
-                victim.addEffect(new EffectInstance(InitEffects.BOOK.get(), effectTime, effectLevel, false, false));
-                // int effectLevel = IStandPower.getStandPowerOptional(victim).map(IStandPower::hasPower).orElse(false) || INonStandPower.getNonStandPowerOptional(victim).map(INonStandPower::hasPower).orElse(false) ? 1 : 2;
-                // victim.addEffect(new EffectInstance(InitEffects.BOOK.get(), 600, effectLevel, false, false));
             }
         }
     }
